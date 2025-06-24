@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>ChatGPT 선물 추천 JSON 저장기</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; }
+    textarea { width: 100%; height: 300px; font-family: monospace; margin-bottom: 20px; }
+    button { padding: 10px 20px; font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>🎁 ChatGPT 선물 추천 → JSON 저장기</h1>
+  <p>ChatGPT에서 복사한 추천 결과(JSON 배열)를 아래에 붙여넣고 <strong>저장</strong> 버튼을 누르세요.</p>
+  <textarea id="input" placeholder='[
+  { "category": "장난감", "name": "레고", "reason": "창의력 향상" }
+]'></textarea>
+  <button onclick="saveJSON()">Download grouped_result.json</button>
+
+  <script>
+    function saveJSON() {
+      const raw = document.getElementById("input").value;
+      try {
+        const parsed = JSON.parse(raw);
+        const blob = new Blob([JSON.stringify(parsed, null, 2)], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "grouped_result.json";
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (e) {
+        alert("⚠ JSON 형식 오류입니다. 다시 확인해주세요.");
+      }
+    }
+  </script>
+</body>
+</html>
